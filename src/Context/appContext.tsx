@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, SetStateAction, useContext, useState } from "react";
 
 interface AppContextData {
   coordinates: {
@@ -6,14 +6,18 @@ interface AppContextData {
     lng: number;
   };
   categories: string[];
+  selectedPlaces: []
   saveCategory: (cats: string[]) => void;
   saveCoordinates: (pos: { lat: number; lng: number }) => void;
+  saveSelectedPlaces: any
 }
 const AppContext = createContext<AppContextData>({
   categories: [],
   coordinates: { lat: 0, lng: 0 },
+  selectedPlaces: [],
   saveCategory: () => {},
   saveCoordinates: () => {},
+  saveSelectedPlaces: () => {}
 });
 
 export function useAppContext() {
@@ -24,6 +28,7 @@ export type AppContextProps = { children: ReactNode };
 
 export default function ApplicationContext({ children }: AppContextProps) {
   const [categories, setCategories] = useState<string[]>([]);
+  const [selectedPlaces, setSelectedPlaces] = useState<any>([]);
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
     lat: 0,
     lng: 0,
@@ -39,9 +44,14 @@ export default function ApplicationContext({ children }: AppContextProps) {
     setCoordinates(pos);
   };
 
+  const saveSelectedPlaces = (places: []) => {
+    console.log("context saveSelectedPlaces", places);
+    setSelectedPlaces((prevState: any) => [...prevState, places]);
+  };
+
   return (
     <AppContext.Provider
-      value={{ categories, coordinates, saveCategory, saveCoordinates }}
+      value={{ categories, coordinates, saveCategory, saveCoordinates, selectedPlaces, saveSelectedPlaces }}
     >
       {children}
     </AppContext.Provider>
