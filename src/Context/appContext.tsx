@@ -1,17 +1,22 @@
 import { createContext, ReactNode, useContext, useState } from "react";
+import { WayPoint } from "../Component/MapRoute";
 
 interface AppContextData {
+  waypoints: WayPoint[];
   coordinates: {
     lat: number;
     lng: number;
   };
   categories: string[];
+  saveWaypoints: (points: WayPoint[]) => void;
   saveCategory: (cats: string[]) => void;
   saveCoordinates: (pos: { lat: number; lng: number }) => void;
 }
 const AppContext = createContext<AppContextData>({
+  waypoints: [],
   categories: [],
   coordinates: { lat: 0, lng: 0 },
+  saveWaypoints: () => {},
   saveCategory: () => {},
   saveCoordinates: () => {},
 });
@@ -24,6 +29,7 @@ export type AppContextProps = { children: ReactNode };
 
 export default function ApplicationContext({ children }: AppContextProps) {
   const [categories, setCategories] = useState<string[]>([]);
+  const [waypoints, setWaypoints] = useState<WayPoint[]>([]);
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
     lat: 0,
     lng: 0,
@@ -34,6 +40,11 @@ export default function ApplicationContext({ children }: AppContextProps) {
     setCategories([...cats]);
   };
 
+  const saveWaypoints = (points: WayPoint[]) => {
+    console.log("context saveWaypoints", points);
+    setWaypoints([...points]);
+  };
+
   const saveCoordinates = (pos: { lat: number; lng: number }) => {
     console.log("context saveCoordinates", pos);
     setCoordinates(pos);
@@ -41,7 +52,14 @@ export default function ApplicationContext({ children }: AppContextProps) {
 
   return (
     <AppContext.Provider
-      value={{ categories, coordinates, saveCategory, saveCoordinates }}
+      value={{
+        categories,
+        coordinates,
+        waypoints,
+        saveCategory,
+        saveWaypoints,
+        saveCoordinates,
+      }}
     >
       {children}
     </AppContext.Provider>

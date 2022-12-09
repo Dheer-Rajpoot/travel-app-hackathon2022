@@ -32,9 +32,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         />
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
         <meta name="theme-color" content="#317EFB" />
+        <link
+          rel="stylesheet"
+          href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css"
+          type="text/css"
+        />
+        <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+        <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
       </Head>
       <ApplicationContext>
-        <div>
+        <div className="w-full h-full">
           <Component {...pageProps} />
         </div>
       </ApplicationContext>

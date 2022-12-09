@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { FeaturesRoot } from "../Types/Features";
-import MultipleSelect from "./atoms/multiselect/Multiselect";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Router from "next/router";
 import { useAppContext } from "../Context/appContext";
@@ -13,7 +12,6 @@ interface LocationDetectedProps {
 // LocationDetected Component
 export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
   const { saveCategory, saveCoordinates } = useAppContext();
-
   const [cityOfInterest, setCityOfInterest] = useState("");
   const [interestCountry, setInterestCountry] = useState("");
   const [coordinates, setCoordinates] = useState([]);
