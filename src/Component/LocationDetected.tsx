@@ -3,6 +3,7 @@ import { FeaturesRoot } from "../Types/Features";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Router from "next/router";
 import { useAppContext } from "../Context/appContext";
+import { categories } from "../Data/categories";
 
 interface LocationDetectedProps {
   landMark: string;
@@ -40,9 +41,7 @@ export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
       Router.push(`/poi`);
     }
   };
-  //TODO - fetch dynamically
-  const categoryOptions = ["monument", "hotel"];
-
+  const categoryOptions = categories;
   const latlongFormat = ["long", "lat"];
   // fetch city of interest based on landmark
   useEffect(() => {
