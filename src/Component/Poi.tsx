@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../Context/appContext";
+import { WayPoint } from "./MapRoute";
 import clxs from 'clsx'
 import { useRouter } from "next/router";
 
@@ -7,7 +8,7 @@ export interface PoiProps {}
 
 const Poi = ({}: PoiProps) => {
   const router = useRouter();
-  const { categories, coordinates, selectedPlaces, saveSelectedPlaces,  } = useAppContext();
+  const { categories, coordinates, saveWaypoints, selectedPlaces, saveSelectedPlaces,  } = useAppContext();
   const { lat, lng } = coordinates;
   const radius = 9000;
   const subscriptionKey = "NAXWQD3Pyr9Rzxb4dto1J0iXICEhDlLykfgIk8w8sYw";
