@@ -1,42 +1,109 @@
 import { useEffect, useState } from "react";
 import { FeaturesRoot } from "../Types/Features";
+import MultipleSelect from "./atoms/multiselect/Multiselect";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Router from "next/router";
+import { useAppContext } from "../Context/appContext";
 
-export const LocationDetected: React.FC<Landmarktype> = ({
-    landMark
-  })=>{
-    const [city, setCity] = useState('')
-    const [country, setCountry] = useState('')
-    const [coordinates,setCoordinates] = useState ([])
-
-
-useEffect(()=>{
-    fetch(`https://atlas.microsoft.com/geocode?subscription-key=Px_Nhgb8e0fe7gBm8PLbRM1pHSCFIfE-RhyrjADos1A&api-version=2022-02-01-preview&query=${landMark}`)
-    .then(response => response.json())
-    .then(data => { 
-      setCity(data.features[0].properties.address.locality)
-      setCountry(data.features[0].properties.address.countryRegion.name)
-      setCoordinates(data.features[0].geometry.coordinates)
-       });
-
-
-},[])
-
-
-  return(
-    <>
-    <div className="font-bold text-center">We have detected your landmark as {landMark}</div>
-    <div>city :{city}</div>
-    <div>country: {country}</div>
-    <div>coordinates: {coordinates.map((location,id)=>{
-    return(
-      <div key={id}>{location}</div>
-      )
-    })}</div>
-    </>
-    
-)
+interface LocationDetectedProps {
+  landMark: string;
 }
 
-type Landmarktype = {
-    landMark: string
+// Step - 2
+// LocationDetected Component
+export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
+  const { saveCategory, saveCoordinates } = useAppContext();
+
+  const [cityOfInterest, setCityOfInterest] = useState("");
+  const [interestCountry, setInterestCountry] = useState("");
+  const [coordinates, setCoordinates] = useState([]);
+  // This holds the selected values
+  const [selectedCategories, setSelectedCategories] = useState<string[]>();
+
+  // Handle the onChange event of the select
+  const onCategoryChangeHandler = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selectedOptions = event.currentTarget.selectedOptions;
+    setSelectedCategories((current) => {
+      if (!!current) {
+        if (!current.includes(selectedOptions[0].value))
+          return [...current, selectedOptions[0].value];
+        else return [selectedOptions[0].value];
+      } else return [selectedOptions[0].value];
+    });
   };
+
+  const handleNextClick = () => {
+    if (!!selectedCategories) {
+      saveCategory(selectedCategories);
+      console.log(coordinates);
+      saveCoordinates({ lng: coordinates[0], lat: coordinates[1] });
+      Router.push(`/poi`);
+    }
+  };
+  //TODO - fetch dynamically
+  const categoryOptions = ["monument", "hotel"];
+
+  const latlongFormat = ["long", "lat"];
+  // fetch city of interest based on landmark
+  useEffect(() => {
+    fetch(
+      `https://atlas.microsoft.com/geocode?subscription-key=Px_Nhgb8e0fe7gBm8PLbRM1pHSCFIfE-RhyrjADos1A&api-version=2022-02-01-preview&query=${landMark}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("landmark data", data);
+        setCityOfInterest(data.features[0].properties.address.locality);
+        setInterestCountry(
+          data.features[0].properties.address.countryRegion.name
+        );
+        setCoordinates(data.features[0].geometry.coordinates);
+      });
+  }, []);
+  console.log(selectedCategories);
+  return (
+    <>
+      <div className="font-bold text-center">
+        We have detected your landmark as {landMark}
+      </div>
+      <div>city :{cityOfInterest}</div>
+      <div>country: {interestCountry}</div>
+      <div>
+        Coordinates:{" "}
+        {coordinates.map((location, id) => {
+          console.log("coordinates", coordinates);
+          return (
+            <div key={id}>
+              {latlongFormat[id]}-{location}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* TODO - Fetch these categories dynamically */}
+      <div className="container">
+        <h3>Choose Categories</h3>
+        <select multiple={true} size={5} onChange={onCategoryChangeHandler}>
+          {categoryOptions &&
+            categoryOptions.map((option, idx) => {
+              return (
+                <option key={idx} value={option}>
+                  {option}
+                </option>
+              );
+            })}
+        </select>
+        <br />
+        <div>
+          {/* Display the selected values */}
+          {selectedCategories &&
+            selectedCategories.map((selectedCategory, idx) => (
+              <span key={idx}>{selectedCategory}</span>
+            ))}
+          <button onClick={handleNextClick}>Next</button>
+        </div>
+      </div>
+    </>
+  );
+};
