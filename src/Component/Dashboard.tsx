@@ -1,9 +1,12 @@
+import Router from "next/router";
 import React, { useEffect, useState } from "react"
+import { Root } from "../Types/Categories";
 
 export const Dashboard=()=>{
     const [callAPi, setCallAPi] = useState(false);
     const [url, setUrl] = useState("");
-    const [content, setContent] = useState({});
+    
+    
     useEffect(() => {
         if(callAPi)
         {
@@ -14,13 +17,14 @@ const requestOptions = {
 };
 fetch('https://eastus.api.cognitive.microsoft.com/vision/v3.2/analyze?details=Landmarks&language=en&model-version=latest', requestOptions)
     .then(response => response.json())
-    .then(data => {console.log("data",data)
-         setContent(data)});
+    .then(data => {
+       
+const categories=data as Root
+
+         Router.push(`/location?landmark=${categories?.categories[0]?.detail?.landmarks[0]?.name}`)
+        });
         }
       }, [callAPi,url]);
-
-
-
 
 const onClick=()=>{
     if(url)
@@ -34,9 +38,8 @@ const handleChange=(e : React.ChangeEvent<HTMLInputElement>)=>{
 
 return(
     <>
-
 <input type="text" id="imageUrl" name="imageUrl"  onChange={handleChange} value={url} placeholder="Type here" className ="input w-full max-w-xs" />
-
+<br />
 <button className='btn' onClick={onClick}>
  Find Places
 </button>
