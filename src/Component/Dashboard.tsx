@@ -2,7 +2,6 @@ import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../Context/appContext";
 import { Root } from "../Types/Categories";
-
 // Step 1
 // https://images.pexels.com/photos/460740/pexels-photo-460740.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2
 export const Dashboard = () => {
@@ -10,7 +9,6 @@ export const Dashboard = () => {
   const [url, setUrl] = useState("");
   const [error, setError] = useState(false)
   const { saveImage } = useAppContext();
-
   useEffect(() => {
     const uploadToMachine = () => {
       const requestOptions = {
@@ -32,6 +30,7 @@ export const Dashboard = () => {
       )
         .then((response) => response.json())
         .then((data) => {
+          console.log("Azure upload to custom model", data)
           if(data.isBatchSuccessful) {
             setError(true)
           }
@@ -53,6 +52,7 @@ export const Dashboard = () => {
         .then((response) => response.json())
         .then((data) => {
           const customPlace = data.predictions.filter((prediction:any) => prediction.probability > 0.8)
+          console.log("Azure custom ML data", data)
           if (!customPlace.length) {
             uploadToMachine()
           } else {
@@ -77,8 +77,9 @@ export const Dashboard = () => {
       )
         .then((response) => response.json())
         .then((data) => {
+          console.log(data)
           const categories = data as Root;
-          if (!data.categories || !(data.categories[0].detail)) {
+          if (!data.categories || !(data.categories[0].detail) || data.categories[0].detail.landmarks.length < 1 ) {
             callCustomApi()
           } else {
             Router.push(
@@ -88,19 +89,16 @@ export const Dashboard = () => {
         });
     }
   }, [callAPi, url]);
-
   const onClick = () => {
     if (url) {
       saveImage(url);
       setCallAPi(true);
     }
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCallAPi(false);
     setUrl(e.target?.value);
   };
-
   return (
     <>
       {
@@ -125,11 +123,11 @@ export const Dashboard = () => {
         name="imageUrl"
         onChange={handleChange}
         value={url}
-        placeholder="Type here"
-        className="input input-bordered input-primary input-lg w-full max-w-md"
+        placeholder="Enter Image URL here"
+        className="input w-[50%] text-center mb-8"
       />
       <button className="btn btn-secondary" onClick={onClick}>
-        Find Places
+        Detect Landmark
       </button>
     </>
   );
