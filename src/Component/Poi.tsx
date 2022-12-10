@@ -73,7 +73,7 @@ const Poi = ({}: PoiProps) => {
       {
         !selected ?
         <>
-          <h1 className="mb-10 text-center text-7xl text-white mt-16">Points of Interest</h1>
+          <h1 className="mb-10 text-center text-7xl mt-16">Points of Interest</h1>
           { interests?.map((interest, key) =>(
             <div className="ml-16">
                 <h1 className="text-green-500 uppercase text-5xl mt-12 font-bold py-10">{ interest?.category }</h1>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { FeaturesRoot } from "../Types/Features";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Router from "next/router";
 import { useAppContext } from "../Context/appContext";
 
@@ -62,45 +61,37 @@ export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
   console.log(selectedCategories);
   return (
     <>
-      <div className="font-bold text-center">
-        We have detected your landmark as {landMark}
-      </div>
-      <div>city :{cityOfInterest}</div>
-      <div>country: {interestCountry}</div>
-      <div>
-        Coordinates:{" "}
-        {coordinates.map((location, id) => {
-          console.log("coordinates", coordinates);
-          return (
-            <div key={id}>
-              {latlongFormat[id]}-{location}
-            </div>
-          );
-        })}
-      </div>
+      <div className="font-bold text-center">Image Container</div>
+      <h1 className="text-center text-5xl mt-16">
+        {landMark} {cityOfInterest} {interestCountry}
+      </h1>
 
       {/* TODO - Fetch these categories dynamically */}
-      <div className="container">
-        <h3>Choose Categories</h3>
-        <select multiple={true} size={5} onChange={onCategoryChangeHandler}>
-          {categoryOptions &&
-            categoryOptions.map((option, idx) => {
-              return (
-                <option key={idx} value={option}>
-                  {option}
-                </option>
-              );
-            })}
-        </select>
-        <br />
-        <div>
-          {/* Display the selected values */}
-          {selectedCategories &&
-            selectedCategories.map((selectedCategory, idx) => (
-              <span key={idx}>{selectedCategory}</span>
-            ))}
-          <button onClick={handleNextClick}>Next</button>
-        </div>
+      {/* <label className="btn m-1 w-full">Choose Categories</label> */}
+      <select
+        className="select select-bordered select-lg w-full"
+        onChange={onCategoryChangeHandler}
+      >
+        <option disabled selected>
+          What is the best headless CMS
+        </option>
+        {categoryOptions &&
+          categoryOptions.map((option, idx) => {
+            return (
+              <option key={idx} value={option}>
+                {option}
+              </option>
+            );
+          })}
+      </select>
+      <br />
+      <div>
+        {/* Display the selected values */}
+        {selectedCategories &&
+          selectedCategories.map((selectedCategory, idx) => (
+            <span key={idx}>{selectedCategory}</span>
+          ))}
+        <button onClick={handleNextClick}>Next</button>
       </div>
     </>
   );
