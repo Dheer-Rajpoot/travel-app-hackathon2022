@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Script from "next/script";
 import { Helmet } from "react-helmet";
+import { useAppContext } from "../Context/appContext";
 
 export interface MapRouteProps {
   waypoints: WayPoint[];
@@ -13,14 +14,17 @@ export interface WayPoint {
 }
 
 const MapRoute = ({ waypoints }: MapRouteProps) => {
-  console.log("MapRoute waypoints", waypoints);
+  const { selectedPlaces } = useAppContext();
+  console.log("maproute waypoints", selectedPlaces[selectedPlaces.length - 1]);
 
-  const waypoints_mock = [
-    { lng: 77.2177, lat: 28.6304, title: "1-CP" },
-    { lng: 77.0721, lat: 28.3976, title: "2-WorldMark" },
-    { lng: 77.3211, lat: 28.5673, title: "3-DLF Mall Noida" },
-    { lng: 77.0958, lat: 28.5058, title: "4-Ambience" },
-  ];
+  //   let waypoints_mock: WayPoint[] = [
+  //     { lng: 77.2177, lat: 28.6304, title: "1-CP" },
+  //     { lng: 77.0721, lat: 28.3976, title: "2-WorldMark" },
+  //     { lng: 77.3211, lat: 28.5673, title: "3-DLF Mall Noida" },
+  //     { lng: 77.0958, lat: 28.5058, title: "4-Ambience" },
+  //   ];
+
+  let waypoints_mock = selectedPlaces[selectedPlaces.length - 1]; //only the last element is as per expected mock object !! ???
 
   const getMapFunction = `var map, datasource, client;
 
@@ -109,16 +113,14 @@ const MapRoute = ({ waypoints }: MapRouteProps) => {
           })
           ];
   
-          // TRAVEL OPTIONS - CAR
-          var car_options = {
-               // travelMode: 'car',
-              // vehicleWidth: 10,
-              // vehicleHeight: 20,
-              // vehicleLength: 5,
-              // vehicleLoadType: 'USHazmatClass2'
-          }
+          // TRAVEL OPTIONS
+          var 
+             mode_options = {
+                travelMode: 'car'
+              }
+
           //Make a search route request
-          routeURL.calculateRouteDirections(atlas.service.Aborter.timeout(10000), coordinates[0], car_options).then((directions) => {
+          routeURL.calculateRouteDirections(atlas.service.Aborter.timeout(10000), coordinates[0], mode_options).then((directions) => {
               //Get data features from response
               var data = directions.geojson.getFeatures();
               //Get the route line and add some style properties to it.  
@@ -148,6 +150,13 @@ const MapRoute = ({ waypoints }: MapRouteProps) => {
       </Script>
 
       <div className="w-full h-full" id="myMap"></div>
+
+      <div className="absolute top-4 left-4 rounded-xl bg-white w-[300px] text-black border-2 p-4">
+        Shows a route between an origin and a destination, passing through
+        waypoints if they are specified. The route will take into account
+        factors such as current traffic and the typical road speeds on the
+        requested day of the week and time of day.
+      </div>
     </div>
   );
 };

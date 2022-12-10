@@ -15,8 +15,8 @@ interface AppContextData {
     lng: number;
   };
   categories: string[];
-  selectedPlaces: [];
-  saveSelectedPlaces: any;
+  selectedPlaces: WayPoint[];
+  saveSelectedPlaces: (points: WayPoint[]) => void;
   saveImage: (url: string) => void;
   saveWaypoints: (points: WayPoint[]) => void;
   saveCategory: (cats: string[]) => void;
@@ -70,9 +70,9 @@ export default function ApplicationContext({ children }: AppContextProps) {
     setCoordinates(pos);
   };
 
-  const saveSelectedPlaces = (places: []) => {
-    console.log("context saveSelectedPlaces", places);
-    setSelectedPlaces((prevState: any) => [...prevState, places]);
+  const saveSelectedPlaces = (points: WayPoint[]) => {
+    console.log("context saveSelectedPlaces", points);
+    setSelectedPlaces((prevState: any) => [...prevState, points]);
   };
 
   return (
