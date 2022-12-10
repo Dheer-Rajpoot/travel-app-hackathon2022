@@ -1,5 +1,6 @@
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
+import { useAppContext } from "../Context/appContext";
 import { Root } from "../Types/Categories";
 
 // Step 1
@@ -7,6 +8,7 @@ import { Root } from "../Types/Categories";
 export const Dashboard = () => {
   const [callAPi, setCallAPi] = useState(false);
   const [url, setUrl] = useState("");
+  const { saveImage } = useAppContext();
 
   useEffect(() => {
     if (callAPi) {
@@ -35,6 +37,7 @@ export const Dashboard = () => {
 
   const onClick = () => {
     if (url) {
+      saveImage(url);
       setCallAPi(true);
     }
   };
