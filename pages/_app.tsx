@@ -37,6 +37,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css"
           type="text/css"
         />
+          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Unbounded:wght@500&display=swap" rel="stylesheet"/>
         <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
         <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
       </Head>
