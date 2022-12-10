@@ -61,7 +61,7 @@ export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
   return (
     <div className="object-fit h-full bg-cover bg-no-repeat" style={{ backgroundImage: `url(${imageUrl})`}}>
       <h1 className="text-center text-7xl p-8">
-        {landMark}, {cityOfInterest} {interestCountry}
+        {landMark}, {cityOfInterest}, {interestCountry}
       </h1>
 
       {/* TODO - Fetch these categories dynamically */}

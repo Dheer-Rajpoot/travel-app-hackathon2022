@@ -55,12 +55,12 @@ export const Dashboard = () => {
         name="imageUrl"
         onChange={handleChange}
         value={url}
-        placeholder="Type here"
-        className="input w-full max-w-xs"
+        placeholder="Enter Image URL here"
+        className="input w-[70%] text-center mb-12"
       />
       <br />
       <button className="btn" onClick={onClick}>
-        Find Places
+        Detect Landmark
       </button>
     </>
   );
