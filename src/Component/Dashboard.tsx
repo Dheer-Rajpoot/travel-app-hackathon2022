@@ -46,18 +46,18 @@ export const Dashboard = () => {
         body: JSON.stringify({ url: url }),
       };
       fetch(
-        "https://customvisionakqahackathon2022-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/68cc9541-a88a-4cb0-895a-47bb9c890238/classify/iterations/Iteration3/url",
+        "https://customvisionakqahackathon2022-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/68cc9541-a88a-4cb0-895a-47bb9c890238/classify/iterations/Iteration4/url",
         requestOptions
       )
         .then((response) => response.json())
         .then((data) => {
-          const customPlace = data.predictions.filter((prediction:any) => prediction.probability > 0.8)
+          const customPlace = data.predictions.filter((prediction:any) => prediction.probability > 0.6)
           console.log("Azure custom ML data", data)
           if (!customPlace.length) {
             uploadToMachine()
           } else {
             Router.push(
-              `/location?landmark=${customPlace.tagName}`
+              `/location?landmark=${customPlace[0].tagName}`
             );
           }
         });
