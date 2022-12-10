@@ -53,6 +53,7 @@ export default function ApplicationContext({ children }: AppContextProps) {
 
   const saveImage = (url: string) => {
     setImageUrl(url);
+    console.log(imageUrl)
   };
 
   const saveCategory = (cats: string[]) => {
