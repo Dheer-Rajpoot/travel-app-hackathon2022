@@ -55,7 +55,7 @@ const Poi = ({}: PoiProps) => {
     });
 
     saveSelectedPlaces(cleaned);
-    router.push("/bestroutes");
+    router.push("/maproute");
   };
 
   useEffect(() => {
@@ -100,18 +100,16 @@ const Poi = ({}: PoiProps) => {
               <div className="carousel rounded-box">
                 {interest?.interest?.results?.map((place: any, id: number) => {
                   return (
-                    <>
-                      <div key={id} className="carousel-item h-[200px] mr-4">
-                        <div
-                          className="card shadow-xl bg-primary hover:bg-secondary text-white cursor-pointer w-[350px]"
-                          onClick={() => handleClick(place)}
-                        >
-                          <div className="card-body">
-                            <div className="card-title">{place?.poi?.name}</div>
-                          </div>
+                    <div key={id} className="carousel-item h-[200px] mr-4">
+                      <div
+                        className="card shadow-xl bg-primary hover:bg-secondary text-white cursor-pointer w-[350px]"
+                        onClick={() => handleClick(place)}
+                      >
+                        <div className="card-body">
+                          <div className="card-title">{place?.poi?.name}</div>
                         </div>
                       </div>
-                    </>
+                    </div>
                   );
                 })}
               </div>
