@@ -59,14 +59,15 @@ export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
       className="object-fit h-full bg-cover bg-no-repeat"
       style={{ backgroundImage: `url(${imageUrl})` }}
     >
-      <h1 className="text-center text-7xl p-8">
+      <h1 className="text-center block text-7xl p-8 text-black">
         {landMark}, {cityOfInterest}, {interestCountry}
       </h1>
       {/* TODO - Fetch these categories dynamically */}
       {/* <label className="btn m-1 w-full">Choose Categories</label> */}
-      <div className="mx-8">
-        <div className="mt-48 text-3xl text-gray-900 text-bold text-center">
-          What will you be intrested in finding more about {cityOfInterest}
+      <div className="flex flex-col items-center w-screen">
+      <div className="mx-8 relative mt-48 pb-28 w-[40%] rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-100 p-10">
+        <div className="text-3xl text-black text-bold text-center">
+          What will you be interested in finding more about {cityOfInterest}?
         </div>
         <select
           className="select select-primary select-lg w-full mt-12"
@@ -94,17 +95,18 @@ export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
           {/* Display the selected values */}
           {selectedCategories &&
             selectedCategories.map((selectedCategory, idx) => (
-              <span className="mt-4 p-3 badge mr-2" key={idx}>
+              <span className="mt-4 p-3 badge badge-lg badge-secondary mr-2" key={idx}>
                 {selectedCategory}
               </span>
             ))}
         </div>
         <button
-          className="absolute hover btn btn-success mt-8 right-0"
+          className="absolute hover btn btn-success mt-8 right-6"
           onClick={handleNextClick}
         >
-          Find Point Of Intrests
+          Find Point Of Interests
         </button>
+      </div>
       </div>
     </div>
   );
