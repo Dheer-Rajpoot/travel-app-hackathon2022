@@ -30,6 +30,7 @@ export const Dashboard = () => {
       )
         .then((response) => response.json())
         .then((data) => {
+          console.log("Azure upload to custom model", data)
           if(data.isBatchSuccessful) {
             setError(true)
           }
@@ -51,6 +52,7 @@ export const Dashboard = () => {
         .then((response) => response.json())
         .then((data) => {
           const customPlace = data.predictions.filter((prediction:any) => prediction.probability > 0.8)
+          console.log("Azure custom ML data", data)
           if (!customPlace.length) {
             uploadToMachine()
           } else {
@@ -75,8 +77,9 @@ export const Dashboard = () => {
       )
         .then((response) => response.json())
         .then((data) => {
+          console.log(data)
           const categories = data as Root;
-          if (!data.categories || !(data.categories[0].detail)) {
+          if (!data.categories || !(data.categories[0].detail) || data.categories[0].detail.landmarks.length < 1 ) {
             callCustomApi()
           } else {
             Router.push(
@@ -121,9 +124,8 @@ export const Dashboard = () => {
         onChange={handleChange}
         value={url}
         placeholder="Enter Image URL here"
-        className="input w-[70%] text-center mb-12"
+        className="input w-[50%] text-center mb-8"
       />
-      <br />
       <button className="btn btn-secondary" onClick={onClick}>
         Detect Landmark
       </button>
