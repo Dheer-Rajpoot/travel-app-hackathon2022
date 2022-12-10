@@ -12,7 +12,7 @@ interface LocationDetectedProps {
 // Step - 2
 // LocationDetected Component
 export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
-  const { saveCategory, saveCoordinates } = useAppContext();
+  const { saveCategory, saveCoordinates, imageUrl } = useAppContext();
   const [cityOfInterest, setCityOfInterest] = useState("");
   const [interestCountry, setInterestCountry] = useState("");
   const [coordinates, setCoordinates] = useState([]);
@@ -61,6 +61,7 @@ export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
   console.log(selectedCategories);
   return (
     <>
+      {imageUrl}
       <div className="font-bold text-center">
         We have detected your landmark as {landMark}
       </div>

@@ -1,28 +1,38 @@
-import { createContext, ReactNode, SetStateAction, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { WayPoint } from "../Component/MapRoute";
 
 interface AppContextData {
+  imageUrl: string;
   waypoints: WayPoint[];
   coordinates: {
     lat: number;
     lng: number;
   };
   categories: string[];
-  selectedPlaces: []
+  selectedPlaces: [];
+  saveSelectedPlaces: any;
+  saveImage: (url: string) => void;
   saveWaypoints: (points: WayPoint[]) => void;
   saveCategory: (cats: string[]) => void;
   saveCoordinates: (pos: { lat: number; lng: number }) => void;
-  saveSelectedPlaces: any
 }
 const AppContext = createContext<AppContextData>({
+  imageUrl: "",
   waypoints: [],
   categories: [],
   coordinates: { lat: 0, lng: 0 },
   selectedPlaces: [],
+  saveImage: () => {},
   saveWaypoints: () => {},
   saveCategory: () => {},
   saveCoordinates: () => {},
-  saveSelectedPlaces: () => {}
+  saveSelectedPlaces: () => {},
 });
 
 export function useAppContext() {
@@ -32,6 +42,7 @@ export function useAppContext() {
 export type AppContextProps = { children: ReactNode };
 
 export default function ApplicationContext({ children }: AppContextProps) {
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedPlaces, setSelectedPlaces] = useState<any>([]);
   const [waypoints, setWaypoints] = useState<WayPoint[]>([]);
@@ -39,6 +50,10 @@ export default function ApplicationContext({ children }: AppContextProps) {
     lat: 0,
     lng: 0,
   });
+
+  const saveImage = (url: string) => {
+    setImageUrl(url);
+  };
 
   const saveCategory = (cats: string[]) => {
     console.log("context saveCategory", cats);
@@ -63,12 +78,16 @@ export default function ApplicationContext({ children }: AppContextProps) {
   return (
     <AppContext.Provider
       value={{
+        imageUrl,
         categories,
         coordinates,
         waypoints,
+        selectedPlaces,
         saveCategory,
         saveWaypoints,
-        saveCoordinates, selectedPlaces, saveSelectedPlaces,
+        saveCoordinates,
+        saveImage,
+        saveSelectedPlaces,
       }}
     >
       {children}
