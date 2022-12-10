@@ -107,6 +107,16 @@ const Poi = ({}: PoiProps) => {
                       >
                         <div className="card-body">
                           <div className="card-title">{place?.poi?.name}</div>
+                          <p className="text-xs">{place?.address?.freeformAddress}</p>
+                          <div className="flex gap-2">
+                            {
+                              place?.poi?.categories.map((category: string) => {
+                                return (
+                                  <div className="badge badge-accent badge-sm">{ category }</div>
+                                )
+                              })
+                            }
+                          </div>
                         </div>
                       </div>
                     </div>
