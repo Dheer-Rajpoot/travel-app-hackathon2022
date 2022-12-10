@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FeaturesRoot } from "../Types/Features";
 import Router from "next/router";
 import { useAppContext } from "../Context/appContext";
+import { categories } from "../Data/categories";
 
 interface LocationDetectedProps {
   landMark: string;
@@ -10,7 +11,7 @@ interface LocationDetectedProps {
 // Step - 2
 // LocationDetected Component
 export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
-  const { saveCategory, saveCoordinates } = useAppContext();
+  const { saveCategory, saveCoordinates, imageUrl } = useAppContext();
   const [cityOfInterest, setCityOfInterest] = useState("");
   const [interestCountry, setInterestCountry] = useState("");
   const [coordinates, setCoordinates] = useState([]);
@@ -39,9 +40,7 @@ export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
       Router.push(`/poi`);
     }
   };
-  //TODO - fetch dynamically
-  const categoryOptions = ["monument", "hotel"];
-
+  const categoryOptions = categories;
   const latlongFormat = ["long", "lat"];
   // fetch city of interest based on landmark
   useEffect(() => {
@@ -60,39 +59,43 @@ export const LocationDetected = ({ landMark }: LocationDetectedProps) => {
   }, []);
   console.log(selectedCategories);
   return (
-    <>
-      <div className="font-bold text-center">Image Container</div>
-      <h1 className="text-center text-5xl mt-16">
-        {landMark} {cityOfInterest} {interestCountry}
+    <div className="object-fit h-full bg-cover bg-no-repeat" style={{ backgroundImage: `url(${imageUrl})`}}>
+      <h1 className="text-center text-7xl p-8">
+        {landMark}, {cityOfInterest} {interestCountry}
       </h1>
 
       {/* TODO - Fetch these categories dynamically */}
       {/* <label className="btn m-1 w-full">Choose Categories</label> */}
-      <select
-        className="select select-bordered select-lg w-full"
+      <div className="mx-8">
+      <div className="mt-48 text-3xl text-gray-900 text-bold text-center">What will you be intrested in finding more about {cityOfInterest}</div>
+        <select
+        className="select select-primary select-lg w-full mt-12"
         onChange={onCategoryChangeHandler}
       >
-        <option disabled selected>
-          What is the best headless CMS
+        <option disabled selected className="text-center">
+          Select categories
         </option>
         {categoryOptions &&
           categoryOptions.map((option, idx) => {
             return (
-              <option key={idx} value={option}>
+              <option className="text-3xl text-center w-full" key={idx} value={option}>
                 {option}
               </option>
             );
           })}
       </select>
-      <br />
+      <br/>
+      
       <div>
         {/* Display the selected values */}
         {selectedCategories &&
           selectedCategories.map((selectedCategory, idx) => (
-            <span key={idx}>{selectedCategory}</span>
+            <span className="mt-4 p-3 badge mr-2" key={idx}>{selectedCategory}</span>
           ))}
-        <button onClick={handleNextClick}>Next</button>
+          </div>
+          <button className="absolute hover btn btn-success mt-8 right-0" onClick={handleNextClick}>Find Point Of Intrests</button>
+      
       </div>
-    </>
+      </div>
   );
 };
